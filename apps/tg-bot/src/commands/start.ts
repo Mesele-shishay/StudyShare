@@ -1,4 +1,6 @@
 import { Context } from "grammy";
+import { config } from "../config";
+import { WebAppInfo } from "grammy/types";
 
 export async function startCommand(ctx: Context) {
   const welcomeMessage = `
@@ -16,5 +18,24 @@ Use /help to see all available commands.
 Happy studying! 📖✨
   `.trim();
 
-  await ctx.reply(welcomeMessage);
+  // Create web app info
+  const webAppInfo: WebAppInfo = {
+    url: config.WEB_APP_URL,
+  };
+
+  // Create inline keyboard with web app button
+  const keyboard = {
+    inline_keyboard: [
+      [
+        {
+          text: "🚀 Open StudyShare App",
+          web_app: webAppInfo,
+        },
+      ],
+    ],
+  };
+
+  await ctx.reply(welcomeMessage, {
+    reply_markup: keyboard,
+  });
 }

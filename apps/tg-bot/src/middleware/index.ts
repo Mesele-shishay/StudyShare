@@ -1,5 +1,6 @@
 import { Bot } from "grammy";
 import { logger } from "../utils/logger";
+import { handleWebAppData } from "../webapp/handler";
 
 export function setupMiddleware(bot: Bot) {
   // Log all updates
@@ -11,6 +12,17 @@ export function setupMiddleware(bot: Bot) {
 
     const duration = Date.now() - start;
     logger.debug(`Update processed in ${duration}ms`);
+  });
+
+  // Handle web app data
+  bot.use(async (ctx, next) => {
+    // Check if this is a web app data message
+    if (ctx.message?.web_app_data) {
+      await handleWebAppData(ctx);
+      return; // Don't continue to other handlers
+    }
+
+    await next();
   });
 
   // Handle errors
