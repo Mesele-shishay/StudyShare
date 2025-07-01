@@ -1,136 +1,149 @@
-# Turborepo starter
+# 🎓 StudyShare
 
-This Turborepo starter is maintained by the Turborepo core team.
+> **A modern, AI-powered Telegram Web App for university students to manage, share, and supercharge their academic life.**
 
-## Using this example
+---
 
-Run the following command:
+## 🧠 Concept Summary
 
-```sh
-npx create-turbo@latest
-```
+StudyShare is a mobile-first, AI-integrated platform embedded in Telegram, enabling students to:
 
-## What's inside?
+- 📤 **Upload** class notes or documents (PDF, DOCX)
+- 🧠 **Generate smart summaries & flashcards** using AI
+- 🔎 **Check for plagiarism**
+- 🤝 **Share & browse study materials** by course/university
+- 📱 **Access everything in a lightweight web interface** inside Telegram
 
-This Turborepo includes the following packages/apps:
+---
 
-### Apps and Packages
+## 🚀 Why StudyShare?
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- **No new logins or installs** — just open via Telegram
+- **AI-assisted learning** — save hours on manual work
+- **Community-powered** — share and discover resources
+- **Freemium model** — start free, upgrade for more
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+---
 
-### Utilities
+## 🔑 Key Features
 
-This Turborepo has some additional tools already setup for you:
+### 1. 📤 Upload & Share Academic Materials
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+- Upload documents with metadata (title, course, department, year, tags)
+- Browse, download, rate, and bookmark materials
 
-### Build
+### 2. 🧠 Smart AI Tools
 
-To build all apps and packages, run the following command:
+- **Document Summarizer** (OpenAI-powered)
+- **Flashcard Generator** (turns notes into Q&A)
+- **Plagiarism Checker** (Copyleaks API)
 
-```
-cd my-turborepo
+### 3. 🔍 Browse & Search Library
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
+- Public archive of shared materials
+- Filters: department, course, university, keywords
+- Preview and download PDFs
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
+### 4. 👤 Personal Dashboard
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+- Upload & tool usage history
+- Remaining credits (e.g., 10 free summaries/month)
+- Profile info from Telegram
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+### 5. 💳 Payment System (Optional)
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+- Telegram Payments or Stripe
+- Buy extra credits or Pro plan
 
-### Develop
+---
 
-To develop all apps and packages, run the following command:
+## 📱 Telegram Web App Advantage
 
-```
-cd my-turborepo
+- Opens via Telegram bot with `/start`
+- Seamless user auth (Telegram ID, HMAC verification)
+- Full-screen, mobile-first UI
+- Uses `window.Telegram.WebApp.initDataUnsafe` for user info
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+---
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+## 🧱 Tech Stack
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+| Layer        | Technology                            |
+| ------------ | ------------------------------------- |
+| Frontend     | Next.js 15, Tailwind CSS, shadcn/ui   |
+| Backend API  | Express.js (REST)                     |
+| ORM          | Prisma                                |
+| Database     | PostgreSQL (Supabase)                 |
+| File Storage | UploadThing / Cloudinary              |
+| AI APIs      | OpenAI, Copyleaks                     |
+| Telegram Bot | grammY                                |
+| Auth         | Telegram WebApp + HMAC verification   |
+| Payments     | Telegram Payments / Stripe (optional) |
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+---
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+## 💼 Business Model (Optional)
 
-### Remote Caching
+| Tier | Features                               |
+| ---- | -------------------------------------- |
+| Free | 10 credits/month, upload & browse only |
+| Pro  | Unlimited AI tools, faster processing  |
+| PAYG | Buy credits (e.g., 1 birr = 1 credit)  |
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+---
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## 🏗️ MVP Scope
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+- ✅ Telegram Web App with basic UI
+- ✅ Telegram-based authentication
+- ✅ Upload form + store to DB
+- ✅ AI summarizer (OpenAI)
+- ✅ Material library with filters
+- ✅ Credit system
 
-```
-cd my-turborepo
+---
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
+## 🎨 Target UI Style
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
+- Simple cards with icons and short actions
+- Clean buttons, smooth modals (shadcn/dialog)
+- Bottom tab or sidebar nav: Home / Tools / Library / Profile
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+---
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## 👥 Who Will Use This?
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
+- University students
+- Lecturers sharing summaries
+- Study group leaders, club members
+- Self-learners needing fast learning assistance
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
+---
 
-## Useful Links
+## 📦 Getting Started
 
-Learn more about the power of Turborepo:
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/Mesele-shishay/StudyShare.git
+   ```
+2. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
+3. **Set up environment variables** (see `.env.example`)
+4. **Run the app:**
+   ```bash
+   pnpm dev
+   ```
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
-"# stud-share" 
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## 📄 License
+
+[MIT](LICENSE)
