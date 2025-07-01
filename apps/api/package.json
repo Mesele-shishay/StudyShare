@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "study-share@api",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
