@@ -1,8 +1,12 @@
-import { Bot } from "grammy";
+import { Bot, webhookCallback } from "grammy";
 import { config } from "./config";
 import { setupCommands } from "./commands";
 import { setupMiddleware } from "./middleware";
 import { logger } from "./utils/logger";
+import express from "express";
+
+const app = express(); // or whatever you're using
+app.use(express.json()); // parse the JSON request body
 
 async function main() {
   try {
@@ -19,14 +23,13 @@ async function main() {
     bot.catch((err) => {
       logger.error("Bot error:", err);
     });
+    await bot.api.setWebhook(config.WEBHOOK_URL);
 
     // Start the bot
     logger.info("Starting bot...");
-    await bot.start({
-      onStart: (botInfo) => {
-        logger.info(`Bot @${botInfo.username} started successfully!`);
-      },
-    });
+
+    // "express" is also used as default if no argument is given.
+    app.use(webhookCallback(bot, "express"));
 
     // Graceful shutdown
     process.once("SIGINT", () => {
