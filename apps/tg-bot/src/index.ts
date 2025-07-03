@@ -77,9 +77,7 @@ async function main() {
     app.listen(PORT, () => {
       logger.info(`Server is running on port ${PORT}`);
       logger.info(`Listening for Telegram updates at ${path}`);
-      logger.info(
-        `Set WEBHOOK_URL to your public URL (e.g., https://yourdomain.com/webhook)`
-      );
+      logger.info(`Set WEBHOOK_URL to your public URL `);
     });
 
     process.once("SIGINT", () => {
