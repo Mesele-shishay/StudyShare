@@ -8,8 +8,8 @@ export const config = {
     process.env.BOT_TOKEN || "7704609777:AAFNXW9zc2CCnxCs9L5xjwpiP_TtzOyurDY",
   NODE_ENV: process.env.NODE_ENV || "development",
   DEBUG: process.env.DEBUG === "true",
-  WEB_APP_URL: process.env.WEB_APP_URL || "",
-  WEBHOOK_URL: process.env.WEBHOOK_URL || "",
+  WEB_APP_URL: process.env.WEB_APP_URL || "https://study-share-web.vercel.app/",
+  WEBHOOK_URL: process.env.WEBHOOK_URL || "https://study-share-bot.vercel.app",
 } as const;
 
 // Validate required environment variables

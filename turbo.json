@@ -17,14 +17,5 @@
       "cache": false,
       "persistent": true
     }
-  },
-  "env": {
-    "@stud-share/tg-bot": [
-      "BOT_TOKEN",
-      "WEB_APP_URL",
-      "DEBUG",
-      "WEBHOOK_URL",
-      "WEBHOOK_PATH"
-    ]
   }
 }
