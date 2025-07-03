@@ -5,7 +5,6 @@ import React, {useEffect, useState} from 'react';
 import {Swiper, SwiperSlide} from 'swiper/react';
 
 import {text} from '../../text';
-import {URLS} from '../../config';
 import {Routes} from '../../routes';
 import {theme} from '../../constants';
 import {components} from '../../components';
@@ -14,21 +13,21 @@ const onboarding = [
   {
     id: 1,
     title: 'Discover useful resources',
-    image: `${URLS.MAIN_URL}/assets/onboarding/01_02.png`,
+    image: '/assets/onboarding/01_02.png',
     description:
       'E-Learning is for everyone. \n Discover useful resources and \n improve your skills.',
   },
   {
     id: 2,
     title: 'New profession',
-    image: `${URLS.MAIN_URL}/assets/onboarding/02_02.png`,
+    image: '/assets/onboarding/02_02.png',
     description:
       'With us you can get a new profession, learn \n skills for career development',
   },
   {
     id: 3,
     title: 'Move forward',
-    image: `${URLS.MAIN_URL}/assets/onboarding/03_02.png`,
+    image: '/assets/onboarding/03_02.png',
     description:
       'We have created a comfortable learning \n environment for you to move forward',
   },

@@ -5,7 +5,6 @@ import React, {useEffect} from 'react';
 
 import {svg} from '../../svg';
 import {text} from '../../text';
-import {URLS} from '../../config';
 import {Routes} from '../../routes';
 import {theme} from '../../constants';
 import {components} from '../../components';
@@ -44,10 +43,10 @@ export const SignUpAccountCreated: React.FC = () => {
             ...theme.fonts.League_Spartan,
           }}
         >
-          Nuton
+          StudyShare
         </text.T12>
         <Image
-          src={`${URLS.MAIN_URL}/assets/images/05.png`}
+          src={`/assets/images/05.png`}
           alt='Account created'
           width={0}
           height={0}

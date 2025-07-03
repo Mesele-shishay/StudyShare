@@ -1,4 +1,4 @@
-const MAIN_URL = `https://nuton-data.vercel.app/`;
+const MAIN_URL = `https://StudyShare-data.vercel.app/`;
 
 export const GET_COUPONS = `${MAIN_URL}api/coupons.json`;
 export const GET_COURSES = `${MAIN_URL}api/courses.json`;

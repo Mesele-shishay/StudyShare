@@ -5,7 +5,6 @@ import Image from 'next/image';
 import React, {useEffect} from 'react';
 
 import {text} from '../../text';
-import {URLS} from '../../config';
 import {items} from '../../items';
 import {Routes} from '../../routes';
 import {theme} from '../../constants';
@@ -117,7 +116,7 @@ export const Profile: React.FC = () => {
               className='center clickable'
             >
               <Image
-                src={`${URLS.MAIN_URL}/assets/users/01.png`}
+                src={`/assets/users/01.png`}
                 alt='User'
                 width={0}
                 height={0}

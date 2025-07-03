@@ -43,7 +43,7 @@ const reviews = [
     rating: 5,
     date: 'March 3, 2022',
     comment: 'Lots of good info.',
-    avatar: 'https://george-fx.github.io/nuton_api/assets/users/02.jpg',
+    avatar: '/assets/users/01.png',
   },
   {
     id: 2,
@@ -51,7 +51,7 @@ const reviews = [
     rating: 5,
     date: 'March 28, 2022',
     comment: 'Great course!',
-    avatar: 'https://george-fx.github.io/nuton_api/assets/users/03.jpg',
+    avatar: '/assets/users/01.png',
   },
   {
     id: 3,
@@ -59,7 +59,7 @@ const reviews = [
     rating: 5,
     date: 'February 12, 2022',
     comment: 'It was a great course.',
-    avatar: 'https://george-fx.github.io/nuton_api/assets/users/04.jpg',
+    avatar: '/assets/users/01.png',
   },
 ];
 
@@ -325,26 +325,14 @@ export const CourseDetails: React.FC<Props> = ({courses, id}) => {
             <svg.CourseUserSvg />
             <text.T16>{course?.author}</text.T16>
           </span>
-          <span style={{...utils.rowCenter({gap: 10}), marginBottom: 6}}>
-            <svg.VideoSvg />
-            <text.T16>14 hours on-demand video</text.T16>
-          </span>
+
           <span style={{...utils.rowCenter({gap: 10}), marginBottom: 6}}>
             <svg.DownloadSvg />
-            <text.T16>16 downloadable resources</text.T16>
+            <text.T16>16 Pages</text.T16>
           </span>
-          <span style={{...utils.rowCenter({gap: 10}), marginBottom: 10}}>
-            <svg.CertificateSvg />
-            <text.T16>Certificate of completion</text.T16>
-          </span>
-          <text.T16 style={{marginBottom: 24}}>
-            Welcome to Udemy's first, No Coding Required, VR development course,
-            using VRTK 4. Build once and deploy to both Oculus.
-          </text.T16>
-          <components.Button
-            label='Buy course'
-            href={Routes.CHECKOUT.replace(':id', String(course?.id))}
-          />
+
+          <text.T16 style={{marginBottom: 24}}>{course?.description}</text.T16>
+          <components.Button label='Download File' />
         </div>
       );
     }
@@ -422,8 +410,7 @@ export const CourseDetails: React.FC<Props> = ({courses, id}) => {
             })}
           </Accordion.Root>
           <components.Button
-            label='Buy course'
-            href={Routes.CHECKOUT}
+            label='Download File'
             style={{marginBottom: 20, marginTop: 20}}
           />
         </div>
@@ -581,17 +568,17 @@ export const CourseDetails: React.FC<Props> = ({courses, id}) => {
                               color: '#D7D9FE',
                             }}
                           >
-                            {course.duration}
+                            16 Pages
                           </text.T14>
                         </div>
-                        <text.T16
+                        {/* <text.T16
                           style={{
                             color: theme.colors.white,
                             ...theme.fonts.Lato_700Bold,
                           }}
                         >
-                          ${course.price.toFixed(2)}
-                        </text.T16>
+                          Birr {course.price.toFixed(2)}
+                        </text.T16> */}
                       </div>
                       <elements.CourseRating
                         course={course}

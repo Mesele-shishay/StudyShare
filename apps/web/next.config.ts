@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
 
   images: {
     unoptimized: true,
-    domains: ['nuton-data.vercel.app'],
+    domains: ['StudyShare-data.vercel.app'],
   },
 };
 

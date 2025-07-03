@@ -8,7 +8,7 @@ export const config = {
     process.env.BOT_TOKEN || "7704609777:AAFNXW9zc2CCnxCs9L5xjwpiP_TtzOyurDY",
   NODE_ENV: process.env.NODE_ENV || "development",
   DEBUG: process.env.DEBUG === "true",
-  WEB_APP_URL: process.env.WEB_APP_URL || "https://meselecodes.vercel.app",
+  WEB_APP_URL: process.env.WEB_APP_URL || "http://localhost:3000",
 } as const;
 
 // Validate required environment variables

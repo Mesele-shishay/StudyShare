@@ -7,7 +7,6 @@ import {Swiper, SwiperSlide} from 'swiper/react';
 
 import {svg} from '../../svg';
 import {text} from '../../text';
-import {URLS} from '../../config';
 import {items} from '../../items';
 import {Routes} from '../../routes';
 import {theme} from '../../constants';
@@ -97,7 +96,7 @@ export const Home: React.FC<Props> = ({courses, categories}) => {
               height={24}
               sizes='100vw'
               priority={true}
-              src={`${URLS.MAIN_URL}/assets/users/01.png`}
+              src={`/assets/users/01.png`}
             />
             <text.H2 style={{lineHeight: 1.2, marginTop: 4}}>
               Hello, Mesele

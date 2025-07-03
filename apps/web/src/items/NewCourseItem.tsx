@@ -65,17 +65,17 @@ export const NewCourseItem: React.FC<Props> = ({index, course}) => {
               color: '#D7D9FE',
             }}
           >
-            {course.duration}
+            16 Pages
           </text.T14>
         </div>
-        <text.T16
+        {/* <text.T16
           style={{
             color: theme.colors.white,
             ...theme.fonts.Lato_700Bold,
           }}
         >
-          ${course.price.toFixed(2)}
-        </text.T16>
+          Birr {course.price.toFixed(2)}
+        </text.T16> */}
       </div>
       <elements.CourseRating
         course={course}

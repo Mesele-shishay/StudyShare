@@ -46,7 +46,7 @@ export const PaymentFailed: React.FC = () => {
             ...theme.fonts.League_Spartan,
           }}
         >
-          Nuton
+          StudyShare
         </span>
         <Image
           src={`${URLS.MAIN_URL}/assets/images/09.png`}

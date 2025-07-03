@@ -5,7 +5,6 @@ import React, {useEffect, useState} from 'react';
 import {Swiper, SwiperSlide} from 'swiper/react';
 
 import {text} from '../text';
-import {URLS} from '../config';
 import {Routes} from '../routes';
 import {theme} from '../constants';
 import {components} from '../components';
@@ -14,21 +13,21 @@ const onboarding = [
   {
     id: 1,
     title: 'Upload & Share Academic Materials',
-    image: `${URLS.MAIN_URL}/assets/onboarding/01_02.png`,
+    image: `/assets/onboarding/01_02.png`,
     description:
       'Upload your class notes and documents. \n Share them with fellow students and \n discover resources from your university.',
   },
   {
     id: 2,
     title: 'AI-Powered Learning Tools',
-    image: `${URLS.MAIN_URL}/assets/onboarding/02_02.png`,
+    image: `/assets/onboarding/02_02.png`,
     description:
       'Generate smart summaries and flashcards \n using AI. Check for plagiarism and \n supercharge your study sessions.',
   },
   {
     id: 3,
     title: 'Access Everything in Telegram',
-    image: `${URLS.MAIN_URL}/assets/onboarding/03_02.png`,
+    image: `/assets/onboarding/03_02.png`,
     description:
       'No new logins or installs needed. \n Open StudyShare directly in Telegram \n and manage your academic life.',
   },
