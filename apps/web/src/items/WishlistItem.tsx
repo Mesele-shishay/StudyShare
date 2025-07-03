@@ -6,7 +6,6 @@ import Image from 'next/image';
 
 import {text} from '../text';
 import {utils} from '../utils';
-import {Routes} from '../routes';
 import {theme} from '../constants';
 import {CourseType} from '../types';
 import {course as elements} from '../course';
@@ -46,14 +45,14 @@ export const WishlistItem: React.FC<Props> = ({course, isLast}) => {
             style={{marginBottom: 4}}
           />
         </div>
-        <elements.CourseDuration
+        {/* <elements.CourseDuration
           course={course}
           containerStyle={{marginBottom: 3}}
-        />
+        /> */}
         <div style={{...utils.rowCenterSpcBtw()}}>
-          <elements.CoursePrice course={course} />
+          {/* <elements.CoursePrice course={course} /> */}
           <Link
-            href={Routes.CHECKOUT.replace(':id', String(course.id))}
+            href={'/home'}
             style={{
               borderRadius: 5,
               cursor: 'pointer',
@@ -68,7 +67,7 @@ export const WishlistItem: React.FC<Props> = ({course, isLast}) => {
                 color: theme.colors.mainColor,
               }}
             >
-              buy now
+              Download Now
             </text.T10>
           </Link>
         </div>
