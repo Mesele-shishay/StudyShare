@@ -1,6 +1,6 @@
 import { Context } from "grammy";
-import { WebAppInfo } from "@grammyjs/web-app";
 import { config } from "../config";
+import { WebAppInfo } from "grammy/types";
 
 export async function webappCommand(ctx: Context) {
   try {
