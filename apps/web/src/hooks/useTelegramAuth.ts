@@ -1,7 +1,6 @@
 'use client';
 
 import {useState, useEffect} from 'react';
-import {useRouter} from 'next/navigation';
 import {userApi, TelegramUser} from '../services/api';
 
 export interface TelegramAuthState {
@@ -18,8 +17,6 @@ export const useTelegramAuth = () => {
     user: null,
     error: null,
   });
-
-  const router = useRouter();
 
   useEffect(() => {
     const initializeTelegramAuth = async () => {
