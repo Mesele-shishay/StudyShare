@@ -4,11 +4,11 @@ import React from 'react';
 
 import {text} from '../../text';
 import {items} from '../../items';
-import {stores} from '../../stores';
+import {useWishlistStore} from '../../stores';
 import {components} from '../../components';
 
 export const MyWishlist: React.FC = () => {
-  const {list: wishlist} = stores.useWishlistStore();
+  const {list: wishlist} = useWishlistStore();
 
   const renderBackground = () => {
     return <components.Background version={1} />;

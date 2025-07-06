@@ -1,22 +1,33 @@
+'use client';
+
 import React from 'react';
 
-import {stores} from '../stores';
-import type {CourseType} from '../types';
+import {CourseType} from '../types';
+import {useWishlistStore} from '../stores';
 
-type Props = {dish: CourseType};
+interface HeartSvgProps {
+  course: CourseType;
+  size?: number;
+}
 
-export const HeartSvg: React.FC<Props> = ({dish}) => {
-  const {list} = stores.useWishlistStore();
-  const ifInWishlist = list.find((item) => item.id === dish.id);
+export const HeartSvg: React.FC<HeartSvgProps> = ({course, size = 24}) => {
+  const {list} = useWishlistStore();
+
+  const isInWishlist = list.some((item) => item?.id === course?.id);
 
   return (
-    <svg xmlns='http://www.w3.org/2000/svg' width={16} height={16} fill='none'>
+    <svg
+      width={size}
+      height={size}
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
       <path
-        fill={ifInWishlist ? '#FA5555' : 'transparent'}
-        stroke={ifInWishlist ? '#FA5555' : '#666666'}
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        d='M13.893 3.073a3.667 3.667 0 0 0-5.186 0L8 3.78l-.707-.707A3.668 3.668 0 0 0 2.107 8.26l.706.707L8 14.153l5.187-5.186.706-.707a3.667 3.667 0 0 0 0-5.187v0Z'
+        d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'
+        fill={isInWishlist ? '#FF6B6B' : 'none'}
+        stroke={isInWishlist ? '#FF6B6B' : '#666'}
+        strokeWidth='2'
       />
     </svg>
   );

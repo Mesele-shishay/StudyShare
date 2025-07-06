@@ -20,6 +20,7 @@ export const useTabStore = create<TabStateType>()(
     }),
     {
       name: 'tab-storage',
+      skipHydration: true,
     },
   ),
 );

@@ -4,6 +4,7 @@ import type {Metadata, Viewport} from 'next';
 import 'swiper/css';
 import '../scss/_index.scss';
 import {components} from '../components';
+import {StoreProvider} from '../stores';
 
 const lato = Lato({
   weight: '400',
@@ -43,7 +44,9 @@ export default function RootLayout({
         id='app'
         className={`${lato.variable} ${leagueSpartan.variable}`}
       >
-        <components.AuthWrapper>{children}</components.AuthWrapper>
+        <StoreProvider>
+          <components.AuthWrapper>{children}</components.AuthWrapper>
+        </StoreProvider>
       </body>
     </html>
   );

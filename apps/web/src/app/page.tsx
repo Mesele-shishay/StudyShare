@@ -4,7 +4,6 @@ import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {components} from '../components';
 import {userApi} from '../services/api';
-import WebApp from '@twa-dev/sdk';
 
 export default function StartPage() {
   const [message, setMessage] = useState('Initializing...');
@@ -14,6 +13,9 @@ export default function StartPage() {
     const checkUserAndRedirect = async () => {
       try {
         setMessage('Checking your account...');
+
+        // Dynamically import WebApp only on client side
+        const {default: WebApp} = await import('@twa-dev/sdk');
 
         // Initialize Telegram Web App
         WebApp.ready();

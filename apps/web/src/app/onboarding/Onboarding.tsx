@@ -143,7 +143,7 @@ export const Onboarding: React.FC = () => {
   const renderButton = () => {
     return (
       <section style={{padding: 20}}>
-        <components.Button label='Get Started' href={Routes.SIGN_IN} />
+        <components.Button label='Get Started' href={Routes.HOME} />
       </section>
     );
   };

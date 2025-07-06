@@ -2,7 +2,6 @@
 
 import {useState, useEffect} from 'react';
 import {useRouter} from 'next/navigation';
-import WebApp from '@twa-dev/sdk';
 import {userApi, TelegramUser} from '../services/api';
 
 export interface TelegramAuthState {
@@ -25,6 +24,9 @@ export const useTelegramAuth = () => {
   useEffect(() => {
     const initializeTelegramAuth = async () => {
       try {
+        // Dynamically import WebApp only on client side
+        const {default: WebApp} = await import('@twa-dev/sdk');
+
         // Initialize Telegram Web App
         WebApp.ready();
 
@@ -83,6 +85,9 @@ export const useTelegramAuth = () => {
   const createUser = async (email: string) => {
     try {
       setState((prev) => ({...prev, isLoading: true}));
+
+      // Dynamically import WebApp only on client side
+      const {default: WebApp} = await import('@twa-dev/sdk');
 
       const telegramUser = WebApp.initDataUnsafe?.user;
       if (!telegramUser) {
