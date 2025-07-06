@@ -105,27 +105,8 @@ export const useTelegramAuth = () => {
       const response = await userApi.createUser(userData);
 
       if (response.success && response.data) {
-        // Create user object for local state
-        const newUser: TelegramUser = {
-          id: response.data.userId,
-          email,
-          first_name: telegramUser.first_name || null,
-          last_name: telegramUser.last_name || null,
-          username: telegramUser.username || null,
-          telegram_id: telegramUser.id.toString(),
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        };
-
-        // Update state with the new user
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          user: newUser,
-          error: null,
-        }));
-
-        // No need to manually redirect - AuthWrapper will handle it automatically
+        // User created successfully, reload page to refresh authentication state
+        window.location.reload();
       } else {
         throw new Error(response.message || 'Failed to create user');
       }
