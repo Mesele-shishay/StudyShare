@@ -5,9 +5,9 @@ import React, {useEffect, useState} from 'react';
 import {Swiper, SwiperSlide} from 'swiper/react';
 
 import {text} from '../../text';
-import {Routes} from '../../routes';
 import {theme} from '../../constants';
 import {components} from '../../components';
+import {useTelegramAuth} from '../../hooks/useTelegramAuth';
 
 const onboarding = [
   {
@@ -34,11 +34,28 @@ const onboarding = [
 ];
 
 export const Onboarding: React.FC = () => {
+  const {createUser, isLoading} = useTelegramAuth();
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
   useEffect(() => {
     document.body.style.backgroundColor = theme.colors.white;
   }, []);
 
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const handleGetStarted = async () => {
+    try {
+      // Dynamically import WebApp to get Telegram user data
+      const {default: WebApp} = await import('@twa-dev/sdk');
+      const telegramUser = WebApp.initDataUnsafe?.user;
+
+      if (telegramUser) {
+        // Generate email using username or telegram ID
+        const email = `${telegramUser.username || telegramUser.id}@telegram.user`;
+        await createUser(email);
+      }
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
 
   const renderBackground = () => {
     return <components.Background version={2} />;
@@ -143,7 +160,11 @@ export const Onboarding: React.FC = () => {
   const renderButton = () => {
     return (
       <section style={{padding: 20}}>
-        <components.Button label='Get Started' href={Routes.HOME} />
+        <components.Button
+          label={isLoading ? 'Creating Account...' : 'Get Started'}
+          onClick={isLoading ? undefined : handleGetStarted}
+          style={isLoading ? {opacity: 0.6, pointerEvents: 'none'} : {}}
+        />
       </section>
     );
   };

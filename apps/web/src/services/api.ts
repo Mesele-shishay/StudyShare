@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // API base URL - adjust this based on your deployment
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'https://7d0cbd5s-4000.euw.devtunnels.ms/';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -39,6 +40,7 @@ export const userApi = {
       );
       return response.data;
     } catch (error: any) {
+      console.log(error);
       if (error.response?.data) {
         return error.response.data;
       }

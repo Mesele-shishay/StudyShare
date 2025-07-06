@@ -32,6 +32,8 @@ export const getUserByTelegramId = asyncHandler(
       });
     }
 
+    console.log(result.data);
+
     res.json({
       success: true,
       message: "User retrieved successfully",
