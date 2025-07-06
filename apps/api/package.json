@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@repo/db": "workspace:*",
+    "@twa-dev/sdk": "^8.0.2",
+    "@twa-dev/types": "^8.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",

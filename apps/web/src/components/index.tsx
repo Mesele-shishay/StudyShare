@@ -10,6 +10,9 @@ import {InputField} from './InputField';
 import {RatingStars} from './RatingStars';
 import {BottomTabBar} from './BottomTabBar';
 import {BlockHeading} from './BlockHeading';
+import {SplashScreen} from './SplashScreen';
+import {AppWrapper} from './AppWrapper';
+import {AuthWrapper} from './AuthWrapper';
 
 export const components = {
   Screen,
@@ -24,4 +27,7 @@ export const components = {
   RatingStars,
   BottomTabBar,
   BlockHeading,
+  SplashScreen,
+  AppWrapper,
+  AuthWrapper,
 };

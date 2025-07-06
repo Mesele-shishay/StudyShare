@@ -9,7 +9,7 @@ export const config = {
   NODE_ENV: process.env.NODE_ENV || "development",
   DEBUG: process.env.DEBUG === "true",
   WEB_APP_URL: process.env.WEB_APP_URL || "https://study-share-web.vercel.app/",
-  WEBHOOK_URL: process.env.WEBHOOK_URL || "https://study-share-bot.vercel.app/",
+  WEBHOOK_URL: process.env.WEBHOOK_URL, // Optional for development, required for production
 } as const;
 
 // Validate required environment variables

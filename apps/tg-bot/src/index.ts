@@ -28,6 +28,7 @@ app.get("/", (req, res) => {
         <div class="container">
           <h1>🤖 StudyShare Telegram Bot</h1>
           <p>Status: <b>Online</b> <span style="color: #27ae60;">●</span></p>
+          <p>Mode: <b>${config.NODE_ENV === "production" ? "Webhook" : "Long Polling"}</b></p>
           <div class="dev">
             <p>Developed by <b>StudyShare Team</b></p>
             <p>
@@ -48,8 +49,10 @@ if (!config.BOT_TOKEN) {
   logger.error("BOT_TOKEN is not set");
   process.exit(1);
 }
-if (!config.WEBHOOK_URL) {
-  logger.error("WEBHOOK_URL is not set");
+
+// Only require WEBHOOK_URL in production
+if (config.NODE_ENV === "production" && !config.WEBHOOK_URL) {
+  logger.error("WEBHOOK_URL is required in production");
   process.exit(1);
 }
 
@@ -64,21 +67,40 @@ async function main() {
       logger.error("Bot error:", err);
     });
 
-    // Set webhook
-    await bot.api.setWebhook(config.WEBHOOK_URL);
-    logger.info(`Webhook set to: ${config.WEBHOOK_URL}`);
+    if (config.NODE_ENV === "production") {
+      // Production: Use webhooks
+      await bot.api.setWebhook(config.WEBHOOK_URL!);
+      logger.info(`Webhook set to: ${config.WEBHOOK_URL}`);
 
-    // Extract path from WEBHOOK_URL for Express
-    const url = new URL(config.WEBHOOK_URL);
-    const path = url.pathname;
+      // Extract path from WEBHOOK_URL for Express
+      const url = new URL(config.WEBHOOK_URL!);
+      const path = url.pathname;
 
-    app.use(path, webhookCallback(bot, "express"));
+      app.use(path, webhookCallback(bot, "express"));
 
-    app.listen(PORT, () => {
-      logger.info(`Server is running on port ${PORT}`);
-      logger.info(`Listening for Telegram updates at ${path}`);
-      logger.info(`Set WEBHOOK_URL to your public URL `);
-    });
+      app.listen(PORT, () => {
+        logger.info(`Server is running on port ${PORT}`);
+        logger.info(`Listening for Telegram updates at ${path}`);
+        logger.info(`Production mode: Webhook enabled`);
+      });
+    } else {
+      // Development: Use long polling
+      logger.info("Development mode: Starting long polling...");
+
+      // Start the bot with long polling
+      bot.start({
+        onStart: (botInfo) => {
+          logger.info(`Bot started as @${botInfo.username}`);
+          logger.info("Development mode: Long polling enabled");
+        },
+      });
+
+      // Optional: Start Express server for health checks
+      app.listen(PORT, () => {
+        logger.info(`Health check server running on port ${PORT}`);
+        logger.info(`Development mode: Long polling enabled`);
+      });
+    }
 
     process.once("SIGINT", () => {
       logger.info("Received SIGINT, stopping bot...");

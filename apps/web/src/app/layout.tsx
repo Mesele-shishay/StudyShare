@@ -3,6 +3,7 @@ import type {Metadata, Viewport} from 'next';
 
 import 'swiper/css';
 import '../scss/_index.scss';
+import {components} from '../components';
 
 const lato = Lato({
   weight: '400',
@@ -16,7 +17,12 @@ const leagueSpartan = League_Spartan({
 });
 
 export const viewport: Viewport = {themeColor: '#fff'};
-export const metadata: Metadata = {manifest: '/manifest.json'};
+export const metadata: Metadata = {
+  title: 'StudyShare - AI-Powered Academic Platform',
+  description:
+    'Upload, share, and supercharge your academic materials with AI. Generate summaries, flashcards, and check plagiarism - all within Telegram. Join the community of university students.',
+  manifest: '/manifest.json',
+};
 
 export default function RootLayout({
   children,
@@ -30,13 +36,14 @@ export default function RootLayout({
           name='viewport'
           content='width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0'
         />
+        <script src='https://telegram.org/js/telegram-web-app.js?56'></script>
       </head>
       <body
         suppressHydrationWarning
         id='app'
         className={`${lato.variable} ${leagueSpartan.variable}`}
       >
-        {children}
+        <components.AuthWrapper>{children}</components.AuthWrapper>
       </body>
     </html>
   );

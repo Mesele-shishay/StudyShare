@@ -1,16 +1,41 @@
 import { Request, Response } from "express";
-import { userValidation } from "../validations/userValidation";
-import { prisma } from "@repo/db";
+import { UserService } from "../services/userService";
+import { asyncHandler } from "../middlewares/errorHandler";
 
-export const getUser = async (req: Request, res: Response) => {
-  const validateData = userValidation.safeParse(req.body);
-  if (!validateData.success) {
-    return res.status(400).json({ message: validateData.error.message });
+export const createUser = asyncHandler(async (req: Request, res: Response) => {
+  const result = await UserService.createUser(req.body);
+
+  if (!result.success) {
+    return res.status(400).json(result);
   }
-  const { email, first_name, last_name, username, telegram_id } =
-    validateData.data;
-  const user = await prisma.user.create({
-    data: { email, first_name, last_name, username, telegram_id },
-  });
-  res.json({ message: "User added successfully" });
-};
+
+  res.status(201).json(result);
+});
+
+export const getUserByTelegramId = asyncHandler(
+  async (req: Request, res: Response) => {
+    const telegramId = req.params.telegram_id;
+
+    if (isNaN(Number(telegramId))) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID",
+      });
+    }
+
+    const result = await UserService.getUserByTelegramId(telegramId);
+
+    if (!result.success) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "User retrieved successfully",
+      data: result.data,
+    });
+  }
+);

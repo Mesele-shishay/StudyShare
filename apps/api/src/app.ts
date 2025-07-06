@@ -16,4 +16,8 @@ app.use(express.json());
 import routes from "./routes";
 app.use("/", routes);
 
+// Error handling middleware (must be last)
+import { errorHandler } from "./middlewares/errorHandler";
+app.use(errorHandler);
+
 export default app;
