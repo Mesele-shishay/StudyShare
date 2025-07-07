@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // API base URL - adjust this based on your deployment
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'https://studyshare-4ihz.onrender.com';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
