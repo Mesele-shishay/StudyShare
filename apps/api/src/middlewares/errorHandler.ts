@@ -11,8 +11,6 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error("Error:", error);
-
   // Handle Zod validation errors
   if (error instanceof ZodError) {
     const errorResponse = formatValidationError(error);
