@@ -1,6 +1,7 @@
 'use client';
 
 import {useState, useEffect} from 'react';
+import {useRouter} from 'next/navigation';
 import {userApi, TelegramUser} from '../services/api';
 
 export interface TelegramAuthState {
@@ -17,6 +18,8 @@ export const useTelegramAuth = () => {
     user: null,
     error: null,
   });
+
+  const router = useRouter();
 
   useEffect(() => {
     const initializeTelegramAuth = async () => {
@@ -102,8 +105,8 @@ export const useTelegramAuth = () => {
       const response = await userApi.createUser(userData);
 
       if (response.success && response.data) {
-        // User created successfully, reload page to refresh authentication state
-        window.location.reload();
+        // User created successfully, redirect to home
+        router.push('/home');
       } else {
         throw new Error(response.message || 'Failed to create user');
       }

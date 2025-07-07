@@ -1,8 +1,8 @@
 'use client';
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useRouter, usePathname} from 'next/navigation';
-import {useTelegramAuth} from '../hooks/useTelegramAuth';
+import {useAuthStore} from '../stores/useAuthStore';
 import {AppWrapper} from './AppWrapper';
 import {SplashScreen} from './SplashScreen';
 import {theme} from '../constants';
@@ -12,67 +12,75 @@ interface AuthWrapperProps {
 }
 
 export const AuthWrapper: React.FC<AuthWrapperProps> = ({children}) => {
-  const {isInitialized, isLoading, user, error} = useTelegramAuth();
+  const {isAuthenticated, isLoading, user} = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   // Define public routes that don't require authentication
-  // Exclude root page since it handles its own authentication
   const publicRoutes = ['/onboarding'];
   const isPublicRoute = publicRoutes.includes(pathname);
   const isRootPage = pathname === '/';
 
   useEffect(() => {
-    // Skip authentication checks for root page
-    if (isRootPage) return;
-
-    if (!isInitialized || isLoading) return;
-
-    // If there's an error, stay on current page and show error
-    if (error) return;
-
-    // If user exists and is on a public route, redirect to home
-    if (user && isPublicRoute) {
-      router.push('/home');
+    // Skip authentication checks for root page (it handles its own auth flow)
+    if (isRootPage) {
+      setIsCheckingAuth(false);
       return;
     }
 
-    // If user doesn't exist and is not on onboarding, redirect to onboarding
-    if (!user && !isPublicRoute) {
-      router.push('/onboarding');
-      return;
-    }
-  }, [
-    isInitialized,
-    isLoading,
-    user,
-    error,
-    pathname,
-    isPublicRoute,
-    isRootPage,
-    router,
-  ]);
+    // Handle authentication routing logic
+    const handleAuthRouting = () => {
+      // If user is authenticated and trying to access onboarding, redirect to home
+      if (isAuthenticated && pathname === '/onboarding') {
+        router.push('/home');
+        return;
+      }
 
-  // Skip splash screen for root page since it has its own
+      // If user is not authenticated and trying to access protected route, redirect to onboarding
+      if (!isAuthenticated && !isPublicRoute) {
+        router.push('/onboarding');
+        return;
+      }
+
+      // All checks passed
+      setIsCheckingAuth(false);
+    };
+
+    // Add a small delay to allow auth store hydration
+    const timer = setTimeout(() => {
+      handleAuthRouting();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [isAuthenticated, pathname, isPublicRoute, isRootPage, router]);
+
+  // Skip wrapper for root page since it has its own splash screen
   if (isRootPage) {
     return <>{children}</>;
   }
 
-  // Show splash screen while checking authentication
-  if (!isInitialized || isLoading) {
+  // Show loading screen while checking authentication or during auth store loading
+  if (isCheckingAuth || isLoading) {
     return (
-      <AppWrapper splashDuration={2000}>
+      <AppWrapper>
         <SplashScreen
           onComplete={() => {}}
-          duration={2000}
-          message='Checking your account'
+          duration={3000}
+          message='Checking your access...'
         />
       </AppWrapper>
     );
   }
 
-  // Show error message if there's an error
-  if (error) {
+  // For onboarding route, show content regardless of auth state
+  // (onboarding component will handle redirects if user is already authenticated)
+  if (pathname === '/onboarding') {
+    return <>{children}</>;
+  }
+
+  // For protected routes, ensure user is authenticated
+  if (!isAuthenticated || !user) {
     return (
       <AppWrapper>
         <div
@@ -87,24 +95,30 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({children}) => {
           }}
         >
           <h2 style={{color: theme.colors.coralRed, marginBottom: 16}}>
-            Authentication Error
+            Access Denied
           </h2>
-          <p style={{color: theme.colors.bodyTextColor}}>{error}</p>
-          <p
+          <p style={{color: theme.colors.bodyTextColor, marginBottom: 16}}>
+            You need to be logged in to access this page.
+          </p>
+          <button
+            onClick={() => router.push('/onboarding')}
             style={{
-              color: theme.colors.secondaryTextColor,
-              fontSize: 14,
-              marginTop: 16,
+              padding: '12px 24px',
+              borderRadius: '8px',
+              border: 'none',
+              backgroundColor: theme.colors.mainColor,
+              color: theme.colors.white,
+              cursor: 'pointer',
+              ...theme.fonts.Lato,
             }}
           >
-            Please try refreshing the page or contact support if the problem
-            persists.
-          </p>
+            Go to Setup
+          </button>
         </div>
       </AppWrapper>
     );
   }
 
-  // Render children if authentication is successful
+  // Render children for authenticated users on protected routes
   return <>{children}</>;
 };

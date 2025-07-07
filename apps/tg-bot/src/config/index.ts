@@ -5,7 +5,7 @@ dotenv.config();
 
 export const config = {
   BOT_TOKEN:
-    process.env.BOT_TOKEN || "7704609777:AAFNXW9zc2CCnxCs9L5xjwpiP_TtzOyurDY",
+    process.env.BOT_TOKEN || "8066511941:AAGeyNE37syquVfH27K2Y6S1odcBhZjno3o",
   NODE_ENV: process.env.NODE_ENV || "development",
   DEBUG: process.env.DEBUG === "true",
   WEB_APP_URL: process.env.WEB_APP_URL || "https://study-share-web.vercel.app/",

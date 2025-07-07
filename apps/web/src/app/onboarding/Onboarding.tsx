@@ -3,11 +3,13 @@
 import Image from 'next/image';
 import React, {useEffect, useState} from 'react';
 import {Swiper, SwiperSlide} from 'swiper/react';
+import {useRouter} from 'next/navigation';
 
 import {text} from '../../text';
 import {theme} from '../../constants';
 import {components} from '../../components';
-import {useTelegramAuth} from '../../hooks/useTelegramAuth';
+import {userApi} from '../../services/api';
+import {useAuthStore} from '../../stores/useAuthStore';
 
 const onboarding = [
   {
@@ -34,26 +36,79 @@ const onboarding = [
 ];
 
 export const Onboarding: React.FC = () => {
-  const {createUser, isLoading} = useTelegramAuth();
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [registrationError, setRegistrationError] = useState<string | null>(
+    null,
+  );
+  const router = useRouter();
+  const {setUser, isAuthenticated} = useAuthStore();
 
   useEffect(() => {
     document.body.style.backgroundColor = theme.colors.white;
-  }, []);
+
+    // Redirect if user is already authenticated
+    if (isAuthenticated) {
+      router.push('/home');
+    }
+  }, [isAuthenticated, router]);
 
   const handleGetStarted = async () => {
+    if (isRegistering) return; // Prevent double-click
+
+    setIsRegistering(true);
+    setRegistrationError(null);
+
     try {
-      // Dynamically import WebApp to get Telegram user data
+      // Dynamically import WebApp only on client side
       const {default: WebApp} = await import('@twa-dev/sdk');
+
+      // Get user data from Telegram Web App
       const telegramUser = WebApp.initDataUnsafe?.user;
 
-      if (telegramUser) {
-        // Generate email using username or telegram ID
-        const email = `${telegramUser.username || telegramUser.id}@telegram.user`;
-        await createUser(email);
+      if (!telegramUser) {
+        throw new Error(
+          "Unable to access Telegram user data. Please ensure you're opening this app from Telegram.",
+        );
       }
-    } catch (error) {
-      console.error('Error creating user:', error);
+
+      // Create user with Telegram data
+      const userData = {
+        email: `${telegramUser.username || telegramUser.id}@telegram.user`,
+        first_name: telegramUser.first_name || '',
+        last_name: telegramUser.last_name || '',
+        username: telegramUser.username || '',
+        telegram_id: telegramUser.id.toString(),
+      };
+
+      const createResponse = await userApi.createUser(userData);
+
+      if (createResponse.success) {
+        // Get the newly created user data
+        const userResponse = await userApi.getUserByTelegramId(
+          telegramUser.id.toString(),
+        );
+
+        if (userResponse.success && userResponse.data) {
+          // Set session in auth store
+          setUser(userResponse.data);
+
+          // Redirect to home
+          router.push('/home');
+        } else {
+          throw new Error('User created but unable to retrieve user data');
+        }
+      } else {
+        throw new Error(
+          createResponse.message || 'Failed to create your account',
+        );
+      }
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      setRegistrationError(
+        error.message || 'Failed to create your account. Please try again.',
+      );
+      setIsRegistering(false);
     }
   };
 
@@ -157,13 +212,45 @@ export const Onboarding: React.FC = () => {
     );
   };
 
+  const renderErrorMessage = () => {
+    if (!registrationError) return null;
+
+    return (
+      <section style={{padding: '0 20px', marginBottom: '20px'}}>
+        <div
+          style={{
+            padding: '12px',
+            borderRadius: '8px',
+            backgroundColor: '#ffebee',
+            border: '1px solid #ffcdd2',
+            textAlign: 'center',
+          }}
+        >
+          <p
+            style={{
+              color: '#d32f2f',
+              fontSize: 14,
+              margin: 0,
+              ...theme.fonts.Lato,
+            }}
+          >
+            {registrationError}
+          </p>
+        </div>
+      </section>
+    );
+  };
+
   const renderButton = () => {
     return (
       <section style={{padding: 20}}>
         <components.Button
-          label={isLoading ? 'Creating Account...' : 'Get Started'}
-          onClick={isLoading ? undefined : handleGetStarted}
-          style={isLoading ? {opacity: 0.6, pointerEvents: 'none'} : {}}
+          label={isRegistering ? 'Registering your account...' : 'Get Started'}
+          onClick={handleGetStarted}
+          style={{
+            opacity: isRegistering ? 0.7 : 1,
+            cursor: isRegistering ? 'not-allowed' : 'pointer',
+          }}
         />
       </section>
     );
@@ -176,6 +263,7 @@ export const Onboarding: React.FC = () => {
       {renderCarousel()}
       {renderDescription()}
       {renderDots()}
+      {renderErrorMessage()}
       {renderButton()}
     </components.Screen>
   );

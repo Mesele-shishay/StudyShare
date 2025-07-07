@@ -58,7 +58,19 @@ if (config.NODE_ENV === "production" && !config.WEBHOOK_URL) {
 
 async function main() {
   try {
+    logger.info("Initializing bot...");
     const bot = new Bot(config.BOT_TOKEN);
+
+    // Test bot connection first
+    try {
+      const me = await bot.api.getMe();
+      logger.info(
+        `Bot authenticated successfully: @${me.username} (${me.first_name})`
+      );
+    } catch (error) {
+      logger.error("Failed to authenticate bot:", error);
+      throw error;
+    }
 
     setupMiddleware(bot);
     setupCommands(bot);
@@ -69,6 +81,7 @@ async function main() {
 
     if (config.NODE_ENV === "production") {
       // Production: Use webhooks
+      logger.info("Production mode: Setting up webhook...");
       await bot.api.setWebhook(config.WEBHOOK_URL!);
       logger.info(`Webhook set to: ${config.WEBHOOK_URL}`);
 
@@ -87,18 +100,23 @@ async function main() {
       // Development: Use long polling
       logger.info("Development mode: Starting long polling...");
 
-      // Start the bot with long polling
-      bot.start({
-        onStart: (botInfo) => {
-          logger.info(`Bot started as @${botInfo.username}`);
-          logger.info("Development mode: Long polling enabled");
-        },
-      });
+      try {
+        // Start the bot with long polling
+        await bot.start({
+          onStart: (botInfo) => {
+            logger.info(`✅ Bot started successfully as @${botInfo.username}`);
+            logger.info("Long polling is now active - send /start to test!");
+          },
+        });
+      } catch (error) {
+        logger.error("Failed to start long polling:", error);
+        throw error;
+      }
 
-      // Optional: Start Express server for health checks
+      // Start Express server for health checks
       app.listen(PORT, () => {
         logger.info(`Health check server running on port ${PORT}`);
-        logger.info(`Development mode: Long polling enabled`);
+        logger.info("Visit http://localhost:3000 to check bot status");
       });
     }
 
