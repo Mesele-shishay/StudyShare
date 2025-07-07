@@ -1,7 +1,7 @@
-import { Router } from "express";
+import { Router, IRouter } from "express";
 import { createUser, getUserByTelegramId } from "../controllers/userController";
 
-const router = Router();
+const router: IRouter = Router();
 
 router.post("/", createUser);
 router.get("/:telegram_id", getUserByTelegramId);

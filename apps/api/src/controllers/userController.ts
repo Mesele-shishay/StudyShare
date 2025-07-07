@@ -16,7 +16,7 @@ export const getUserByTelegramId = asyncHandler(
   async (req: Request, res: Response) => {
     const telegramId = req.params.telegram_id;
 
-    if (isNaN(Number(telegramId))) {
+    if (!telegramId || isNaN(Number(telegramId))) {
       return res.status(400).json({
         success: false,
         message: "Invalid user ID",

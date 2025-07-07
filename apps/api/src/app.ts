@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 // Load environment variables from .env file
 dotenv.config();
 
-const app = express();
+const app: Application = express();
 
 app.use(helmet());
 app.use(cors());

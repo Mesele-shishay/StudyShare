@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
-import { Prisma } from "@repo/db";
 import {
   formatValidationError,
   createErrorResponse,
@@ -21,8 +20,9 @@ export const errorHandler = (
   }
 
   // Handle Prisma errors
-  if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    switch (error.code) {
+  if (error && typeof error === "object" && "code" in error) {
+    const prismaError = error as { code: string };
+    switch (prismaError.code) {
       case "P2002":
         return res
           .status(409)

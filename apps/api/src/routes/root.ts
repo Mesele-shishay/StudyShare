@@ -1,7 +1,7 @@
-import { Router } from "express";
+import { Router, IRouter } from "express";
 import { getRoot } from "../controllers/rootController";
 
-const router = Router();
+const router: IRouter = Router();
 
 router.get("/", getRoot);
 

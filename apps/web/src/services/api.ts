@@ -40,7 +40,6 @@ export const userApi = {
       );
       return response.data;
     } catch (error: any) {
-      console.log(error);
       if (error.response?.data) {
         return error.response.data;
       }
