@@ -5,9 +5,29 @@ import Image from 'next/image';
 import {useRouter} from 'next/navigation';
 
 import {components} from '../../components';
+import {useAuthStore} from '../../stores/useAuthStore';
 
 export const AddANewCard: React.FC = () => {
   const router = useRouter();
+  const {user} = useAuthStore();
+
+  // Get user display name with fallback
+  const getUserDisplayName = () => {
+    if (!user) return 'Enter your name';
+
+    const firstName = user.first_name || '';
+    const lastName = user.last_name || '';
+
+    if (firstName && lastName) {
+      return `${firstName} ${lastName}`;
+    } else if (firstName) {
+      return firstName;
+    } else if (user.username) {
+      return user.username;
+    }
+
+    return 'Enter your name';
+  };
 
   const renderImageBackground = () => {
     return <components.Background version={1} />;
@@ -37,7 +57,7 @@ export const AddANewCard: React.FC = () => {
         <components.InputField
           label='Name'
           inputType='text'
-          placeholder='Mesele Shishay'
+          placeholder={getUserDisplayName()}
           containerStyle={{marginBottom: 10}}
         />
         <components.InputField

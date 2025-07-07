@@ -45,7 +45,12 @@ export const Header: React.FC<Props> = ({
     return (
       <button
         onClick={() => router.back()}
-        style={{left: '0px', padding: '8px 20px', position: 'absolute'}}
+        style={{
+          left: '0px',
+          padding: '8px 20px',
+          position: 'absolute',
+          zIndex: 10,
+        }}
       >
         <svg.GoBackSvg />
       </button>
@@ -59,6 +64,8 @@ export const Header: React.FC<Props> = ({
           position: 'absolute',
           left: '50%',
           transform: 'translateX(-50%)',
+          maxWidth: 'calc(100% - 120px)', // Leave space for back button and heart icon
+          textAlign: 'center',
         }}
       >
         <text.H3 style={{textTransform: 'capitalize'}}>{title}</text.H3>
@@ -163,19 +170,28 @@ export const Header: React.FC<Props> = ({
       return null;
     }
     return (
-      <elements.CourseInWishlist
-        course={course}
-        size={20}
+      <div
         style={{
-          height: '100%',
-          width: 'auto',
-          padding: '0 0 0 20px',
-          display: 'flex',
-          alignItems: 'center',
           position: 'absolute',
           right: 0,
+          top: 0,
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          paddingRight: 20,
+          zIndex: 10,
         }}
-      />
+      >
+        <elements.CourseInWishlist
+          course={course}
+          size={20}
+          style={{
+            padding: '8px',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        />
+      </div>
     );
   };
 

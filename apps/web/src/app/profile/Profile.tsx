@@ -9,6 +9,7 @@ import {items} from '../../items';
 import {Routes} from '../../routes';
 import {theme} from '../../constants';
 import {components} from '../../components';
+import {useAuthStore} from '../../stores/useAuthStore';
 
 const HeartSvg: React.FC = () => {
   return (
@@ -77,9 +78,42 @@ const EditSvg: React.FC = () => {
 };
 
 export const Profile: React.FC = () => {
+  const {user} = useAuthStore();
+
   useEffect(() => {
     document.body.style.backgroundColor = theme.colors.white;
   }, []);
+
+  // Get user display name with fallback
+  const getUserDisplayName = () => {
+    if (!user) return 'User';
+
+    // Combine first name and last name if available
+    const firstName = user.first_name || '';
+    const lastName = user.last_name || '';
+
+    if (firstName && lastName) {
+      return `${firstName} ${lastName}`;
+    } else if (firstName) {
+      return firstName;
+    } else if (user.username) {
+      return user.username;
+    }
+
+    return 'User';
+  };
+
+  // Get user email
+  const getUserEmail = () => {
+    if (!user) return 'user@example.com';
+    return user.email || 'No email provided';
+  };
+
+  // Get user profile image (using default since no custom images are stored)
+  const getUserProfileImage = () => {
+    // Since only one avatar exists, use it as default for all users
+    return '/assets/users/01.png';
+  };
 
   const renderBackground = () => {
     return <components.Background version={1} />;
@@ -116,7 +150,7 @@ export const Profile: React.FC = () => {
               className='center clickable'
             >
               <Image
-                src={`/assets/users/01.png`}
+                src={getUserProfileImage()}
                 alt='User'
                 width={0}
                 height={0}
@@ -135,7 +169,9 @@ export const Profile: React.FC = () => {
             </div>
           </Link>
 
-          <text.H2 style={{textAlign: 'center'}}>Mesele Shishay</text.H2>
+          <text.H2 style={{textAlign: 'center'}}>
+            {getUserDisplayName()}
+          </text.H2>
           <span
             style={{
               textAlign: 'center',
@@ -146,7 +182,7 @@ export const Profile: React.FC = () => {
               color: theme.colors.bodyTextColor,
             }}
           >
-            mesele@mail.com
+            {getUserEmail()}
           </span>
         </section>
 

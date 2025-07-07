@@ -11,6 +11,7 @@ import {items} from '../../items';
 import {Routes} from '../../routes';
 import {theme} from '../../constants';
 import {components} from '../../components';
+import {useAuthStore} from '../../stores/useAuthStore';
 
 import type {CourseType} from '../../types';
 import type {CategoryType} from '../../types';
@@ -57,11 +58,27 @@ const carousel: CarouselType[] = [
 ];
 
 export const Home: React.FC<Props> = ({courses, categories}) => {
+  const {user} = useAuthStore();
+
   useEffect(() => {
     document.body.style.backgroundColor = theme.colors.white;
   }, []);
 
   const [activeSlide, setActiveSlide] = useState(0);
+
+  // Get user display name with fallback
+  const getUserDisplayName = () => {
+    if (!user) return 'User';
+
+    // Try first name first, then username, then fallback to 'User'
+    if (user.first_name) {
+      return user.first_name;
+    }
+    if (user.username) {
+      return user.username;
+    }
+    return 'User';
+  };
 
   const handleSlideChange = (swiper: any) => {
     setActiveSlide(swiper.activeIndex);
@@ -99,7 +116,7 @@ export const Home: React.FC<Props> = ({courses, categories}) => {
               src={`/assets/users/01.png`}
             />
             <text.H2 style={{lineHeight: 1.2, marginTop: 4}}>
-              Hello, Mesele
+              Hello, {getUserDisplayName()}
             </text.H2>
           </div>
           <span
