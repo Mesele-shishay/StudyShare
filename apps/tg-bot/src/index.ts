@@ -1,4 +1,5 @@
 import { Bot, webhookCallback } from "grammy";
+import { SocksProxyAgent } from "socks-proxy-agent";
 import { config } from "./config";
 import { setupCommands } from "./commands";
 import { setupMiddleware } from "./middleware";
@@ -59,7 +60,36 @@ if (config.NODE_ENV === "production" && !config.WEBHOOK_URL) {
 async function main() {
   try {
     logger.info("Initializing bot...");
-    const bot = new Bot(config.BOT_TOKEN);
+
+    // Configure proxy if available
+    let botOptions: any = {};
+
+    if (config.PROXY_HOST && config.PROXY_PORT) {
+      logger.info(
+        `Using SOCKS proxy: ${config.PROXY_HOST}:${config.PROXY_PORT}`
+      );
+
+      // Build SOCKS proxy URL
+      const proxyUrl =
+        config.PROXY_USERNAME && config.PROXY_PASSWORD
+          ? `socks5://${config.PROXY_USERNAME}:${config.PROXY_PASSWORD}@${config.PROXY_HOST}:${config.PROXY_PORT}`
+          : `socks5://${config.PROXY_HOST}:${config.PROXY_PORT}`;
+
+      const socksAgent = new SocksProxyAgent(proxyUrl);
+
+      botOptions = {
+        client: {
+          baseFetchConfig: {
+            agent: socksAgent,
+            compress: true, // Optional performance optimization
+          },
+        },
+      };
+    } else {
+      logger.info("No proxy configuration found, using direct connection");
+    }
+
+    const bot = new Bot(config.BOT_TOKEN, botOptions);
 
     // Test bot connection first
     try {
@@ -69,6 +99,9 @@ async function main() {
       );
     } catch (error) {
       logger.error("Failed to authenticate bot:", error);
+      logger.error(
+        "Consider configuring a proxy if you're having network issues"
+      );
       throw error;
     }
 
